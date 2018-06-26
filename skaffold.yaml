@@ -1,0 +1,32 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.DOCKER_REGISTRY}}/cmcgow061408/go-test-cicd:{{.VERSION}}"
+  artifacts:
+  - imageName: changeme
+    workspace: .
+    docker: {}
+  local: {}
+deploy:
+  kubectl:
+    manifests:
+profiles:
+- name: dev
+  build:
+    tagPolicy:
+      envTemplate:
+        template: "{{.DOCKER_REGISTRY}}/cmcgow061408/go-test-cicd:{{.DIGEST_HEX}}"
+    artifacts:
+    - docker: {}
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: go-test-cicd
+        chartPath: charts/go-test-cicd
+        setValueTemplates:
+          image.repository: "{{.DOCKER_REGISTRY}}/cmcgow061408/go-test-cicd"
+          image.tag: "{{.TAG}}"
+        
