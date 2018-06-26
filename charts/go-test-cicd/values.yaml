@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: draft
-  tag: dev
+  repository: 10.7.253.157:5000/cmcgow061408/go-test-cicd
+  tag: 0.0.1
   pullPolicy: IfNotPresent
 service:
   name: go-test-cicd
